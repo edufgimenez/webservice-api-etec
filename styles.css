@@ -75,8 +75,8 @@ input[type="text"] {
 .dog-image {
     max-width: 100%;
     height: auto;
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 600px;
     object-fit: cover;
     border: 1px solid #ccc;
     border-radius: 5px;
