@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random User API Demo</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="content">
+        <h1>RANDOM USER API</h1>
+        <button id="fetchUser">Obter Usuário Aleatório</button>
+        <button onclick="location.href='index.html'">Voltar</button>
+        <div id="content" class="container" style="display: none;">
+            <div class="box large-box">
+                <pre id="output"></pre>
+            </div>
+            <div class="box small-box search-container">
+                <h2>Buscar Campo Específico</h2>
+                <input type="text" id="queryField" placeholder="ex., [location][street]">
+                <button id="searchField">Buscar</button>
+                <pre id="searchOutput"></pre>
+            </div>
+        </div>
+    </div>
+    <footer>
+        Desenvolvido por Eduardo - 2024 &trade;
+        <br>
+        Dados fornecidos por <a href="https://randomuser.me/" target="_blank">Random User API</a>
+    </footer>
+    <script>
+        let userData = {};
+
+        document.getElementById('fetchUser').addEventListener('click', async () => {
+            const response = await fetch('https://randomuser.me/api/');
+            const data = await response.json();
+            userData = data;
+            document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            document.getElementById('content').style.display = 'flex';
+        });
+
+        document.getElementById('searchField').addEventListener('click', () => {
+            const query = document.getElementById('queryField').value;
+            try {
+                const result = query.split('][').reduce((obj, key) => {
+                    key = key.replace(/\[|\]/g, '');
+                    return obj[key];
+                }, userData.results[0]);
+                document.getElementById('searchOutput').textContent = `O resultado encontrado foi: ${JSON.stringify(result, null, 2)}`;
+            } catch (e) {
+                document.getElementById('searchOutput').textContent = 'Consulta inválida!';
+            }
+        });
+    </script>
+</body>
+</html>
